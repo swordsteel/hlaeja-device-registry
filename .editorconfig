@@ -9,7 +9,7 @@ insert_final_newline = true
 max_line_length = 120
 tab_width = 4
 
-[*.{http,json,md,sh,xml,xsd,yaml,yml}]
+[*.{http,json,md,sh,sql,xml,xsd,yaml,yml}]
 max_line_length = 1024
 indent_size = 2
 tab_width = 2

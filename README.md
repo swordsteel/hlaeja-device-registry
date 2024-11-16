@@ -7,6 +7,9 @@ Classes crafted, identities bestowed, Each device recorded, their functions unfo
 | name                   | required | info                    |
 |------------------------|----------|-------------------------|
 | spring.profiles.active | *        | Spring Boot environment |
+| spring.r2dbc.url       | *        | Postgreas host url      |
+| spring.r2dbc.username  | *        | Postgreas username      |
+| spring.r2dbc.password  | **       | Postgreas password      |
 
 Required: * can be stored as text, and ** need to be stored as secret.  
 
