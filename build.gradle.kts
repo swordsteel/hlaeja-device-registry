@@ -9,6 +9,7 @@ plugins {
 dependencies {
     implementation(hlaeja.kotlin.reflect)
     implementation(hlaeja.kotlinx.coroutines)
+    implementation(hlaeja.ltd.hlaeja.library.common.messages)
     implementation(hlaeja.org.springframework.springboot.actuator.starter)
     implementation(hlaeja.org.springframework.springboot.r2dbc.starter)
     implementation(hlaeja.org.springframework.springboot.webflux.starter)
