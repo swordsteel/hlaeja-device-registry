@@ -1,5 +1,7 @@
 package ltd.hlaeja.controller
 
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -11,6 +13,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.test.runTest
 import ltd.hlaeja.entity.TypeEntity
+import ltd.hlaeja.library.deviceRegistry.Type
 import ltd.hlaeja.service.TypeService
 import ltd.hlaeja.assertj.assertThat
 import org.assertj.core.api.Assertions.assertThat
@@ -42,6 +45,22 @@ class TypeControllerTest {
 
         // then
         verify(exactly = 1) { service.getTypes() }
+
+        assertThat(response.id).isUUID("00000000-0000-0000-0000-000000000000")
+        assertThat(response.name).isEqualTo("name")
+    }
+
+    @Test
+    fun `add types`() = runTest {
+        // given
+        val request = Type.Request("name")
+        coEvery { service.addType(any()) } returns TypeEntity(id, timestamp, "name")
+
+        // when
+        val response = controller.addType(request)
+
+        // then
+        coVerify(exactly = 1) { service.addType(any()) }
 
         assertThat(response.id).isUUID("00000000-0000-0000-0000-000000000000")
         assertThat(response.name).isEqualTo("name")
