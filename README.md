@@ -7,9 +7,10 @@ Classes crafted, identities bestowed, Each device recorded, their functions unfo
 | name                   | required | info                    |
 |------------------------|----------|-------------------------|
 | spring.profiles.active | *        | Spring Boot environment |
-| spring.r2dbc.url       | *        | Postgreas host url      |
-| spring.r2dbc.username  | *        | Postgreas username      |
-| spring.r2dbc.password  | **       | Postgreas password      |
+| spring.r2dbc.url       | *        | Postgres host url       |
+| spring.r2dbc.username  | *        | Postgres username       |
+| spring.r2dbc.password  | **       | Postgres password       |
+| jwt.private-key        |          | JWT private cert        |
 
 Required: * can be stored as text, and ** need to be stored as secret.  
 
@@ -17,7 +18,23 @@ Required: * can be stored as text, and ** need to be stored as secret.
 
 Run `release.sh` script from `master` branch.
 
-## Development Configuration
+## Development Information
+
+### Generate Private and Public RSA Key
+
+OpenSSL Project is dedicated to providing a simple installation of OpenSSL for Microsoft Windows. [Download](https://slproweb.com/products/Win32OpenSSL.html)
+
+Generate an RSA private key, of size 2048, and output it to a file named `private_key.pem` in to `./keys`
+
+```shell
+openssl genrsa -out private_key.pem 2048
+```
+
+Extract the public key from `private_key.pem` from `./keys`, and output it to a file named `public_key.pem` in to `./keys`
+
+```shell
+openssl rsa -in private_key.pem -pubout -out public_key.pem
+```
 
 ### Global gradle properties
 

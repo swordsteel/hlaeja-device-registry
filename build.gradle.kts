@@ -8,6 +8,7 @@ plugins {
 
 dependencies {
     implementation(hlaeja.com.fasterxml.jackson.module.kotlin)
+    implementation(hlaeja.jjwt.api)
     implementation(hlaeja.kotlin.logging)
     implementation(hlaeja.kotlin.reflect)
     implementation(hlaeja.kotlinx.coroutines)
@@ -16,6 +17,8 @@ dependencies {
     implementation(hlaeja.org.springframework.springboot.r2dbc.starter)
     implementation(hlaeja.org.springframework.springboot.webflux.starter)
 
+    runtimeOnly(hlaeja.jjwt.impl)
+    runtimeOnly(hlaeja.jjwt.jackson)
     runtimeOnly(hlaeja.org.postgresql)
     runtimeOnly(hlaeja.org.postgresql.r2dbc)
 
@@ -30,3 +33,15 @@ dependencies {
 }
 
 group = "ltd.hlaeja"
+
+tasks {
+    named("processResources") {
+        dependsOn("copyPrivateKey")
+    }
+    register<Copy>("copyPrivateKey") {
+        group = "hlaeja"
+        from("keys/private_key.pem")
+        into("${layout.buildDirectory.get()}/resources/main/keys")
+        onlyIf { file("keys/private_key.pem").exists() }
+    }
+}

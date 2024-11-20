@@ -19,6 +19,11 @@
       "name": "spring.application.build.os.version",
       "type": "java.lang.String",
       "description": "Application build os version."
+    },
+    {
+      "name": "jwt.private-key",
+      "type": "java.lang.String",
+      "description": "Jwt private key file."
     }
   ]
 }
