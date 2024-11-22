@@ -1,0 +1,7 @@
+### register device for a type
+POST {{hostname}}/device
+Content-Type: application/json
+
+{
+  "type": "00000000-0000-0000-0000-000000000000"
+}
