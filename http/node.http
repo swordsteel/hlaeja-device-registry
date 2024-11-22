@@ -1,0 +1,9 @@
+### register node for a client and device with name
+POST {{hostname}}/node
+Content-Type: application/json
+
+{
+  "client": "00000000-0000-0000-0000-000000000000",
+  "device": "00000000-0000-0000-0000-000000000000",
+  "name": "my test device"
+}
