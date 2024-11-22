@@ -1,0 +1,2 @@
+### get identity
+GET {{hostname}}/identity/device-00000000-0000-0000-0000-000000000001
