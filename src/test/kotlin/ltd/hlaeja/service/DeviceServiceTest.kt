@@ -13,6 +13,7 @@ import java.util.UUID
 import kotlinx.coroutines.test.runTest
 import ltd.hlaeja.entity.DeviceEntity
 import ltd.hlaeja.repository.DeviceRepository
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -20,7 +21,6 @@ import org.junit.jupiter.api.Test
 class DeviceServiceTest {
     companion object {
         val timestamp = ZonedDateTime.ofInstant(Instant.parse("2000-01-01T00:00:00.001Z"), ZoneId.of("UTC"))
-
         val device = UUID.fromString("00000000-0000-0000-0000-000000000001")
         val type = UUID.fromString("00000000-0000-0000-0000-000000000002")
     }
@@ -53,8 +53,9 @@ class DeviceServiceTest {
 
         // then
         coVerify(exactly = 1) { repository.save(any()) }
-        kotlin.test.assertEquals(device, result.id)
-        kotlin.test.assertEquals("2000-01-01T00:00:00.001Z[UTC]", result.timestamp.toString())
-        kotlin.test.assertEquals(type, result.type)
+
+        assertThat(result.id).isEqualTo(device)
+        assertThat(result.timestamp.toString()).isEqualTo("2000-01-01T00:00:00.001Z[UTC]")
+        assertThat(result.type).isEqualTo(type)
     }
 }
