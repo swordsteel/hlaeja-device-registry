@@ -3,6 +3,9 @@ package ltd.hlaeja.controller
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.UUID
 import kotlinx.coroutines.test.runTest
 import ltd.hlaeja.assertj.assertThat
@@ -14,6 +17,9 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class NodeControllerTest {
+    companion object {
+        val timestamp: ZonedDateTime = ZonedDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0, 0, 1), ZoneId.of("UTC"))
+    }
 
     val service: NodeService = mockk()
 
@@ -46,5 +52,29 @@ class NodeControllerTest {
         assertThat(response.client).isUUID("00000000-0000-0000-0000-000000000001")
         assertThat(response.device).isUUID("00000000-0000-0000-0000-000000000002")
         assertThat(response.name).isEqualTo("test")
+    }
+
+    @Test
+    fun `get node by device - success`() = runTest {
+        // given
+        val device = UUID.fromString("00000000-0000-0000-0000-000000000003")
+        val entity = NodeEntity(
+            UUID.fromString("00000000-0000-0000-0000-000000000001"),
+            timestamp,
+            UUID.fromString("00000000-0000-0000-0000-000000000002"),
+            UUID.fromString("00000000-0000-0000-0000-000000000003"),
+            "test",
+        )
+
+        coEvery { service.getNodeFromDevice(any()) } returns entity
+
+        // when
+        val response = controller.getNodeFromDevice(device)
+
+        // then
+        coVerify(exactly = 1) { service.getNodeFromDevice(any()) }
+
+        assertThat(response.id).isUUID("00000000-0000-0000-0000-000000000001")
+        assertThat(response.client).isUUID("00000000-0000-0000-0000-000000000002")
     }
 }

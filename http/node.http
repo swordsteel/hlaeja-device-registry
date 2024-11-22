@@ -7,3 +7,6 @@ Content-Type: application/json
   "device": "00000000-0000-0000-0000-000000000000",
   "name": "my test device"
 }
+
+### get node and client
+GET {{hostname}}/node/device-01935430-9f80-70c0-85b2-62e9aa04f8cf
