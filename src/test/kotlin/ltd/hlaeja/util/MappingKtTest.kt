@@ -145,4 +145,48 @@ class MappingKtTest {
             assertThat(exception.message).isEqualTo("417 EXPECTATION_FAILED")
         }
     }
+
+    @Nested
+    inner class IdentityMapping {
+
+        @Test
+        fun `entity to identity response successful`() {
+            // given
+            val entity = NodeEntity(
+                UUID.fromString("00000000-0000-0000-0000-000000000001"),
+                timestamp,
+                UUID.fromString("00000000-0000-0000-0000-000000000002"),
+                UUID.fromString("00000000-0000-0000-0000-000000000003"),
+                "test",
+            )
+
+            // when
+            val result = entity.toIdentityResponse()
+
+            // then
+            assertThat(result.node).isUUID("00000000-0000-0000-0000-000000000001")
+            assertThat(result.client).isUUID("00000000-0000-0000-0000-000000000002")
+            assertThat(result.device).isUUID("00000000-0000-0000-0000-000000000003")
+        }
+
+        @Test
+        fun `entity to identity response exception`() {
+            // given
+            val entity = NodeEntity(
+                null,
+                timestamp,
+                UUID.fromString("00000000-0000-0000-0000-000000000002"),
+                UUID.fromString("00000000-0000-0000-0000-000000000003"),
+                "test",
+            )
+
+            // then exception
+            val exception = assertThrows(ResponseStatusException::class.java) {
+                entity.toIdentityResponse()
+            }
+
+            // then
+            assertThat(exception.message).isEqualTo("417 EXPECTATION_FAILED")
+        }
+    }
 }

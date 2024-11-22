@@ -3,6 +3,7 @@ package ltd.hlaeja.util
 import java.time.ZonedDateTime
 import ltd.hlaeja.entity.NodeEntity
 import ltd.hlaeja.entity.TypeEntity
+import ltd.hlaeja.library.deviceRegistry.Identity
 import ltd.hlaeja.library.deviceRegistry.Node
 import ltd.hlaeja.library.deviceRegistry.Type
 import org.springframework.http.HttpStatus.EXPECTATION_FAILED
@@ -28,4 +29,10 @@ fun NodeEntity.toNodeResponse(): Node.Response = Node.Response(
     client,
     device,
     name,
+)
+
+fun NodeEntity.toIdentityResponse(): Identity.Response = Identity.Response(
+    client,
+    id ?: throw ResponseStatusException(EXPECTATION_FAILED),
+    device,
 )
