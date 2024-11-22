@@ -144,5 +144,44 @@ class MappingKtTest {
             // then
             assertThat(exception.message).isEqualTo("417 EXPECTATION_FAILED")
         }
+
+        @Test
+        fun `entity to node client response successful`() {
+            // given
+            val entity = NodeEntity(
+                UUID.fromString("00000000-0000-0000-0000-000000000001"),
+                timestamp,
+                UUID.fromString("00000000-0000-0000-0000-000000000002"),
+                UUID.fromString("00000000-0000-0000-0000-000000000003"),
+                "test",
+            )
+
+            // when
+            val result = entity.toNodeClientResponse()
+
+            // then
+            assertThat(result.id).isUUID("00000000-0000-0000-0000-000000000001")
+            assertThat(result.client).isUUID("00000000-0000-0000-0000-000000000002")
+        }
+
+        @Test
+        fun `entity to node client response exception`() {
+            // given
+            val entity = NodeEntity(
+                null,
+                timestamp,
+                UUID.fromString("00000000-0000-0000-0000-000000000002"),
+                UUID.fromString("00000000-0000-0000-0000-000000000003"),
+                "test",
+            )
+
+            // then exception
+            val exception = assertThrows(ResponseStatusException::class.java) {
+                entity.toNodeClientResponse()
+            }
+
+            // then
+            assertThat(exception.message).isEqualTo("417 EXPECTATION_FAILED")
+        }
     }
 }

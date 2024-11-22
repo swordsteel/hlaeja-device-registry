@@ -29,3 +29,8 @@ fun NodeEntity.toNodeResponse(): Node.Response = Node.Response(
     device,
     name,
 )
+
+fun NodeEntity.toNodeClientResponse(): Node.NodeClientResponse = Node.NodeClientResponse(
+    id ?: throw ResponseStatusException(EXPECTATION_FAILED),
+    client,
+)
