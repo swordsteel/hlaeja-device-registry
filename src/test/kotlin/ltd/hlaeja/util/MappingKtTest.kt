@@ -9,8 +9,10 @@ import java.time.ZonedDateTime
 import java.util.UUID
 import kotlin.test.Test
 import ltd.hlaeja.assertj.assertThat
+import ltd.hlaeja.entity.NodeEntity
 import ltd.hlaeja.entity.TypeEntity
 import ltd.hlaeja.library.deviceRegistry.Type
+import ltd.hlaeja.library.deviceRegistry.Node
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertThrows
@@ -76,6 +78,71 @@ class MappingKtTest {
             assertThrows(ResponseStatusException::class.java) {
                 TypeEntity(null, timestamp, "name").toTypeResponse()
             }
+        }
+    }
+
+    @Nested
+    inner class NodeMapping {
+
+        @Test
+        fun `request to entity successful`() {
+            // given
+            val request = Node.Request(
+                UUID.fromString("00000000-0000-0000-0000-000000000001"),
+                UUID.fromString("00000000-0000-0000-0000-000000000002"),
+                "test",
+            )
+
+            // when
+            val result = request.toEntity()
+
+            // then
+            assertThat(result.id).isNull()
+            assertThat(result.timestamp.toString()).isEqualTo("2000-01-01T00:00:00.000000001Z[UTC]")
+            assertThat(result.client.toString()).isEqualTo("00000000-0000-0000-0000-000000000001")
+            assertThat(result.device.toString()).isEqualTo("00000000-0000-0000-0000-000000000002")
+            assertThat(result.name).isEqualTo("test")
+        }
+
+        @Test
+        fun `entity to response successful`() {
+            // given
+            val entity = NodeEntity(
+                UUID.fromString("00000000-0000-0000-0000-000000000001"),
+                timestamp,
+                UUID.fromString("00000000-0000-0000-0000-000000000002"),
+                UUID.fromString("00000000-0000-0000-0000-000000000003"),
+                "test",
+            )
+
+            // when
+            val result = entity.toNodeResponse()
+
+            // then
+            assertThat(result.id).isUUID("00000000-0000-0000-0000-000000000001")
+            assertThat(result.client).isUUID("00000000-0000-0000-0000-000000000002")
+            assertThat(result.device).isUUID("00000000-0000-0000-0000-000000000003")
+            assertThat(result.name).isEqualTo("test")
+        }
+
+        @Test
+        fun `entity to response exception`() {
+            // given
+            val entity = NodeEntity(
+                null,
+                timestamp,
+                UUID.fromString("00000000-0000-0000-0000-000000000002"),
+                UUID.fromString("00000000-0000-0000-0000-000000000003"),
+                "test",
+            )
+
+            // then exception
+            val exception = assertThrows(ResponseStatusException::class.java) {
+                entity.toNodeResponse()
+            }
+
+            // then
+            assertThat(exception.message).isEqualTo("417 EXPECTATION_FAILED")
         }
     }
 }
