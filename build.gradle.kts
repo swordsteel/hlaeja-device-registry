@@ -16,6 +16,7 @@ dependencies {
     runtimeOnly(hlaeja.org.postgresql)
     runtimeOnly(hlaeja.org.postgresql.r2dbc)
 
+    testImplementation(hlaeja.assertj.core)
     testImplementation(hlaeja.io.mockk)
     testImplementation(hlaeja.io.projectreactor.reactor.test)
     testImplementation(hlaeja.kotlin.test.junit5)
