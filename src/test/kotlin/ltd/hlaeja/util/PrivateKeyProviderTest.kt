@@ -11,7 +11,7 @@ class PrivateKeyProviderTest {
     @Test
     fun `load private key - success`() {
         // given
-        val pemFilePath = "keys/valid-private-key.pem"
+        val pemFilePath = "cert/valid-private-key.pem"
 
         // when
         val privateKey: RSAPrivateKey = PrivateKeyProvider.load(pemFilePath)
@@ -24,7 +24,7 @@ class PrivateKeyProviderTest {
     @Test
     fun `load private key - file does not exist`() {
         // given
-        val nonExistentPemFilePath = "keys/non-existent.pem"
+        val nonExistentPemFilePath = "cert/non-existent.pem"
 
         // when exception
         val exception = assertThrows<KeyProviderException> {
@@ -38,7 +38,7 @@ class PrivateKeyProviderTest {
     @Test
     fun `load private key - file is invalid`() {
         // given
-        val invalidPemFilePath = "keys/invalid-private-key.pem"
+        val invalidPemFilePath = "cert/invalid-private-key.pem"
 
         // when exception
         val exception = assertThrows<IllegalArgumentException> {

@@ -11,7 +11,7 @@ spring:
         version: "%APP_BUILD_OS_VERSION%"
 
 jwt:
-  private-key: keys/private_key.pem
+  private-key: cert/private_key.pem
 
 ---
 ###############################

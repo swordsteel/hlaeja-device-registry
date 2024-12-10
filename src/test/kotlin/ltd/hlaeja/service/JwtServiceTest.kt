@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 
 class JwtServiceTest {
 
-    val property: JwtProperty = JwtProperty("keys/valid-private-key.pem")
+    val property: JwtProperty = JwtProperty("cert/valid-private-key.pem")
     lateinit var service: JwtService
 
     @BeforeEach

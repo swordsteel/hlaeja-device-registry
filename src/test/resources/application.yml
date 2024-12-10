@@ -1,5 +1,5 @@
 jwt:
-  private-key: keys/valid-private-key.pem
+  private-key: cert/valid-private-key.pem
 
 spring:
   r2dbc:
