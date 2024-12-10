@@ -5,3 +5,6 @@ Content-Type: application/json
 {
   "type": "00000000-0000-0000-0000-000000000000"
 }
+
+### register device for a type
+GET {{hostname}}/device-00000000-0000-0000-0000-000000000000

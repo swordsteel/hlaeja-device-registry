@@ -14,6 +14,7 @@ import ltd.hlaeja.service.DeviceService
 import ltd.hlaeja.service.JwtService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.web.server.ResponseStatusException
@@ -36,35 +37,59 @@ class DeviceControllerTest {
         controller = DeviceController(deviceService, jwtService)
     }
 
-    @Test
-    fun `add device - success`() = runTest {
-        // given
-        val request = Device.Request(uuid)
-        coEvery { deviceService.addDevice(any()) } returns DeviceEntity(uuid, timestamp, uuid)
-        coEvery { jwtService.makeIdentity(any()) } returns PAYLOAD
+    @Nested
+    inner class AddDeviceTest {
 
-        // when
-        val response = controller.addDevice(request)
+        @Test
+        fun `add device - success`() = runTest {
+            // given
+            val request = Device.Request(uuid)
+            coEvery { deviceService.addDevice(any()) } returns DeviceEntity(uuid, timestamp, uuid)
+            coEvery { jwtService.makeIdentity(any()) } returns PAYLOAD
 
-        // then
-        coVerify(exactly = 1) { deviceService.addDevice(any()) }
-        coVerify(exactly = 1) { jwtService.makeIdentity(any()) }
+            // when
+            val response = controller.addDevice(request)
 
-        assertThat(response.identity).isEqualTo(PAYLOAD)
-    }
+            // then
+            coVerify(exactly = 1) { deviceService.addDevice(any()) }
+            coVerify(exactly = 1) { jwtService.makeIdentity(any()) }
 
-    @Test
-    fun `add device - device service fail`() = runTest {
-        // given
-        val request = Device.Request(uuid)
-        coEvery { deviceService.addDevice(any()) } returns DeviceEntity(null, timestamp, uuid)
-
-        // when exception
-        val exception = assertThrows<ResponseStatusException> {
-            controller.addDevice(request)
+            assertThat(response.identity).isEqualTo(PAYLOAD)
         }
 
-        // then
-        assertThat(exception.message).isEqualTo("417 EXPECTATION_FAILED")
+        @Test
+        fun `add device - device service fail`() = runTest {
+            // given
+            val request = Device.Request(uuid)
+            coEvery { deviceService.addDevice(any()) } returns DeviceEntity(null, timestamp, uuid)
+
+            // when exception
+            val exception = assertThrows<ResponseStatusException> {
+                controller.addDevice(request)
+            }
+
+            // then
+            assertThat(exception.message).isEqualTo("417 EXPECTATION_FAILED")
+        }
+    }
+
+    @Nested
+    inner class GetDeviceTest {
+
+        @Test
+        fun `get device - success`() = runTest {
+            // given
+            coEvery { deviceService.getDevice(any()) } returns DeviceEntity(uuid, timestamp, uuid)
+            coEvery { jwtService.makeIdentity(any()) } returns PAYLOAD
+
+            // when
+            val response = controller.getDevice(uuid)
+
+            // then
+            coVerify(exactly = 1) { deviceService.getDevice(any()) }
+            coVerify(exactly = 1) { jwtService.makeIdentity(any()) }
+
+            assertThat(response.identity).isEqualTo(PAYLOAD)
+        }
     }
 }

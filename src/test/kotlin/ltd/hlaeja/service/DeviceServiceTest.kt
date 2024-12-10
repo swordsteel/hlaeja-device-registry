@@ -17,6 +17,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import org.springframework.web.server.ResponseStatusException
 
 class DeviceServiceTest {
     companion object {
@@ -42,7 +44,7 @@ class DeviceServiceTest {
     }
 
     @Test
-    fun `add new type success`() = runTest {
+    fun `add new device success`() = runTest {
         // given
         coEvery { repository.save(any()) } answers { call ->
             (call.invocation.args[0] as DeviceEntity).copy(id = device)
@@ -57,5 +59,38 @@ class DeviceServiceTest {
         assertThat(result.id).isEqualTo(device)
         assertThat(result.timestamp.toString()).isEqualTo("2000-01-01T00:00:00.001Z[UTC]")
         assertThat(result.type).isEqualTo(type)
+    }
+
+    @Test
+    fun `get device - success`() = runTest {
+        // given
+        val device = UUID.fromString("00000000-0000-0000-0000-000000000000")
+        val entity: DeviceEntity = mockk()
+
+        coEvery { repository.findById(any()) } returns entity
+        coEvery { entity.id } returns device
+
+        // when
+        val result = service.getDevice(type)
+
+        // then
+        coVerify(exactly = 1) { repository.findById(any()) }
+        assertThat(result.id).isEqualTo(device)
+    }
+
+    @Test
+    fun `get device - fail not found`() = runTest {
+        // given
+        val device = UUID.fromString("00000000-0000-0000-0000-000000000000")
+
+        coEvery { repository.findById(any()) } returns null
+
+        // when
+        val exception = assertThrows<ResponseStatusException> {
+            service.getDevice(device)
+        }
+
+        // then
+        assertThat(exception.message).isEqualTo("404 NOT_FOUND")
     }
 }

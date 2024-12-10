@@ -5,14 +5,14 @@ Classes crafted, identities bestowed, Each device recorded, their functions unfo
 ## Properties for deployment
 
 | name                   | required | info                    |
-|------------------------|----------|-------------------------|
-| spring.profiles.active | *        | Spring Boot environment |
-| spring.r2dbc.url       | *        | Postgres host url       |
-| spring.r2dbc.username  | *        | Postgres username       |
-| spring.r2dbc.password  | **       | Postgres password       |
-| jwt.private-key        |          | JWT private cert        |
+|------------------------|:--------:|-------------------------|
+| spring.profiles.active | &check;  | Spring Boot environment |
+| spring.r2dbc.url       | &check;  | Postgres host url       |
+| spring.r2dbc.username  | &check;  | Postgres username       |
+| spring.r2dbc.password  | &cross;  | Postgres password       |
+| jwt.private-key        | &check;  | JWT private cert        |
 
-Required: * can be stored as text, and ** need to be stored as secret.  
+*Required: &check; can be stored as text, and &cross; need to be stored as secret.*
 
 ## Releasing Service
 
@@ -20,34 +20,28 @@ Run `release.sh` script from `master` branch.
 
 ## Development Information
 
-### Generate Private and Public RSA Key
+### Private RSA Key
 
-OpenSSL Project is dedicated to providing a simple installation of OpenSSL for Microsoft Windows. [Download](https://slproweb.com/products/Win32OpenSSL.html)
+This service uses RAS keys to create identities for devices. The private key is used here to generate identities, while the public key is used by **[Hlæja Device API](https://github.com/swordsteel/hlaeja-device-api)** to identify a device and accept data.
 
-Generate an RSA private key, of size 2048, and output it to a file named `private_key.pem` in to `./keys`
+*For instructions on how to set these up, please refer to our [generate RSA key](https://github.com/swordsteel/hlaeja-development/blob/master/doc/rsa_key.md) documentation.*
 
-```shell
-openssl genrsa -out private_key.pem 2048
+### Global Setting
+
+The following global settings are used in Hlaeja Device Registry. You can configure these settings using either Gradle properties or alternatively environment variables. 
+
+*For instructions on how to set these up, please refer to our [set global settings](https://github.com/swordsteel/hlaeja-development/blob/master/doc/global_settings.md) documentation.*
+
+#### Gradle Properties
+
+```properties
+repository.user=your_user
+repository.token=your_token_value
 ```
 
-Extract the public key from `private_key.pem` from `./keys`, and output it to a file named `public_key.pem` in to `./keys`
+#### Environment Variables
 
-```shell
-openssl rsa -in private_key.pem -pubout -out public_key.pem
+```properties
+REPOSITORY_USER=your_user
+REPOSITORY_TOKEN=your_token_value
 ```
-
-### Global gradle properties
-
-To authenticate with Gradle to access repositories that require authentication, you can set your user and token in the `gradle.properties` file.
-
-Here's how you can do it:
-
-1. Open or create the `gradle.properties` file in your Gradle user home directory:
-   - On Unix-like systems (Linux, macOS), this directory is typically `~/.gradle/`.
-   - On Windows, this directory is typically `C:\Users\<YourUsername>\.gradle\`.
-2. Add the following lines to the `gradle.properties` file:
-    ```properties
-    repository.user=your_user
-    repository.token=your_token_value
-    ```
-   or use environment variables `REPOSITORY_USER` and `REPOSITORY_TOKEN`
