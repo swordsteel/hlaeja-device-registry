@@ -9,9 +9,9 @@ import java.time.ZonedDateTime
 import java.util.UUID
 import kotlinx.coroutines.test.runTest
 import ltd.hlaeja.entity.DeviceEntity
+import ltd.hlaeja.jwt.service.PrivateJwtService
 import ltd.hlaeja.library.deviceRegistry.Device
 import ltd.hlaeja.service.DeviceService
-import ltd.hlaeja.service.JwtService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -28,13 +28,13 @@ class DeviceControllerTest {
     }
 
     val deviceService: DeviceService = mockk()
-    val jwtService: JwtService = mockk()
+    val privateJwtService: PrivateJwtService = mockk()
 
     lateinit var controller: DeviceController
 
     @BeforeEach
     fun setUp() {
-        controller = DeviceController(deviceService, jwtService)
+        controller = DeviceController(deviceService, privateJwtService)
     }
 
     @Nested
@@ -45,14 +45,14 @@ class DeviceControllerTest {
             // given
             val request = Device.Request(uuid)
             coEvery { deviceService.addDevice(any()) } returns DeviceEntity(uuid, timestamp, uuid)
-            coEvery { jwtService.makeIdentity(any()) } returns PAYLOAD
+            coEvery { privateJwtService.sign(any()) } returns PAYLOAD
 
             // when
             val response = controller.addDevice(request)
 
             // then
             coVerify(exactly = 1) { deviceService.addDevice(any()) }
-            coVerify(exactly = 1) { jwtService.makeIdentity(any()) }
+            coVerify(exactly = 1) { privateJwtService.sign(any()) }
 
             assertThat(response.identity).isEqualTo(PAYLOAD)
         }
@@ -80,14 +80,14 @@ class DeviceControllerTest {
         fun `get device - success`() = runTest {
             // given
             coEvery { deviceService.getDevice(any()) } returns DeviceEntity(uuid, timestamp, uuid)
-            coEvery { jwtService.makeIdentity(any()) } returns PAYLOAD
+            coEvery { privateJwtService.sign(any()) } returns PAYLOAD
 
             // when
             val response = controller.getDevice(uuid)
 
             // then
             coVerify(exactly = 1) { deviceService.getDevice(any()) }
-            coVerify(exactly = 1) { jwtService.makeIdentity(any()) }
+            coVerify(exactly = 1) { privateJwtService.sign(any()) }
 
             assertThat(response.identity).isEqualTo(PAYLOAD)
         }

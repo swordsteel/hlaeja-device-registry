@@ -4,11 +4,11 @@ import java.time.ZonedDateTime
 import ltd.hlaeja.entity.DeviceEntity
 import ltd.hlaeja.entity.NodeEntity
 import ltd.hlaeja.entity.TypeEntity
+import ltd.hlaeja.jwt.service.PrivateJwtService
 import ltd.hlaeja.library.deviceRegistry.Device
 import ltd.hlaeja.library.deviceRegistry.Identity
 import ltd.hlaeja.library.deviceRegistry.Node
 import ltd.hlaeja.library.deviceRegistry.Type
-import ltd.hlaeja.service.JwtService
 import org.springframework.http.HttpStatus.EXPECTATION_FAILED
 import org.springframework.web.server.ResponseStatusException
 
@@ -40,10 +40,10 @@ fun NodeEntity.toIdentityResponse(): Identity.Response = Identity.Response(
     device,
 )
 
-suspend fun DeviceEntity.toDeviceResponse(
-    jwtService: JwtService,
+fun DeviceEntity.toDeviceResponse(
+    jwtService: PrivateJwtService,
 ): Device.Response = Device.Response(
     id ?: throw ResponseStatusException(EXPECTATION_FAILED),
     type,
-    jwtService.makeIdentity(id),
+    jwtService.sign("device" to id),
 )

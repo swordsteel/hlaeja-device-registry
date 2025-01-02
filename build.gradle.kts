@@ -9,17 +9,15 @@ plugins {
 
 dependencies {
     implementation(hlaeja.fasterxml.jackson.module.kotlin)
-    implementation(hlaeja.jjwt.api)
     implementation(hlaeja.kotlin.logging)
     implementation(hlaeja.kotlin.reflect)
     implementation(hlaeja.kotlinx.coroutines)
     implementation(hlaeja.library.hlaeja.common.messages)
+    implementation(hlaeja.library.hlaeja.jwt)
     implementation(hlaeja.springboot.starter.actuator)
     implementation(hlaeja.springboot.starter.r2dbc)
     implementation(hlaeja.springboot.starter.webflux)
 
-    runtimeOnly(hlaeja.jjwt.impl)
-    runtimeOnly(hlaeja.jjwt.jackson)
     runtimeOnly(hlaeja.postgresql)
     runtimeOnly(hlaeja.postgresql.r2dbc)
 
