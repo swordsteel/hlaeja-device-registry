@@ -12,8 +12,8 @@ dependencies {
     implementation(hlaeja.kotlin.logging)
     implementation(hlaeja.kotlin.reflect)
     implementation(hlaeja.kotlinx.coroutines)
-    implementation(hlaeja.library.hlaeja.common.messages)
-    implementation(hlaeja.library.hlaeja.jwt)
+    implementation(hlaeja.library.common.messages)
+    implementation(hlaeja.library.jwt)
     implementation(hlaeja.springboot.starter.actuator)
     implementation(hlaeja.springboot.starter.r2dbc)
     implementation(hlaeja.springboot.starter.webflux)
@@ -26,9 +26,17 @@ dependencies {
     testImplementation(hlaeja.projectreactor.reactor.test)
     testImplementation(hlaeja.kotlin.test.junit5)
     testImplementation(hlaeja.kotlinx.coroutines.test)
-    testImplementation(hlaeja.springboot.starter.test)
 
     testRuntimeOnly(hlaeja.junit.platform.launcher)
+
+    integrationTestImplementation(hlaeja.assertj.core)
+    integrationTestImplementation(hlaeja.library.test)
+    integrationTestImplementation(hlaeja.projectreactor.reactor.test)
+    integrationTestImplementation(hlaeja.kotlin.test.junit5)
+    integrationTestImplementation(hlaeja.kotlinx.coroutines.test)
+    integrationTestImplementation(hlaeja.springboot.starter.test)
+
+    integrationTestRuntimeOnly(hlaeja.junit.platform.launcher)
 }
 
 group = "ltd.hlaeja"
