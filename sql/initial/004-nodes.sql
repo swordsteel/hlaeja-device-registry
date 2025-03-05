@@ -19,7 +19,7 @@ ALTER TABLE IF EXISTS public.nodes
 -- Index: public.i_nodes_type
 -- DROP INDEX IF EXISTS public.i_nodes_type;
 
-CREATE INDEX IF NOT EXISTS i_nodes_device ON public.nodes (device);
+CREATE UNIQUE INDEX IF NOT EXISTS i_nodes_device ON public.nodes (device);
 
 
 -- Revoke all permissions from existing roles

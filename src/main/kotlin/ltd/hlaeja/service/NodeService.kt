@@ -4,6 +4,8 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import java.util.UUID
 import ltd.hlaeja.entity.NodeEntity
 import ltd.hlaeja.repository.NodeRepository
+import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
@@ -17,8 +19,11 @@ class NodeService(
 
     suspend fun addNode(
         node: NodeEntity,
-    ): NodeEntity = nodeRepository.save(node)
-        .also { log.debug { "Added node ${it.id}" } }
+    ): NodeEntity = try {
+        nodeRepository.save(node).also { log.debug { "Added node ${it.id}" } }
+    } catch (exception: DataIntegrityViolationException) {
+        throw ResponseStatusException(BAD_REQUEST, null, exception)
+    }
 
     suspend fun getNodeFromDevice(
         device: UUID,

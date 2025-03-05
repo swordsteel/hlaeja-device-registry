@@ -9,6 +9,8 @@ import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 import org.springframework.boot.test.web.server.LocalServerPort
@@ -46,7 +48,7 @@ class NodeEndpoint {
 
         // then
         result.expectStatus()
-            .isOk
+            .isCreated
             .expectBody<Node.Response>()
             .consumeWith {
                 softly.assertThat(it.responseBody?.id?.version()).isEqualTo(7)
@@ -54,5 +56,26 @@ class NodeEndpoint {
                 softly.assertThat(it.responseBody?.client).isEqualTo(client)
                 softly.assertThat(it.responseBody?.name).isEqualTo(name)
             }
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+        // not a device
+        "'00000000-0000-0000-0002-000000000000'",
+        // already a node
+        "'00000000-0000-0000-0002-000000000002'",
+    )
+    fun `added node - fail`(device: String) {
+        // given
+        val name = "Node 5"
+        val client = UUID.fromString("00000000-0000-0000-0000-000000000000")
+        val request = Node.Request(device = UUID.fromString(device), client = client, name = name)
+
+        // when
+        val result = webClient.post().uri("/node").bodyValue(request).exchange()
+
+        // then
+        result.expectStatus()
+            .isBadRequest
     }
 }
