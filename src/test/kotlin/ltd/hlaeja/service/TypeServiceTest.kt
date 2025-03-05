@@ -37,13 +37,27 @@ class TypeServiceTest {
     @Test
     fun `get all types`() {
         // given
-        every { repository.findAll() } returns flowOf(mockk<TypeEntity>())
+        every { repository.findAll(any(), any()) } returns flowOf(mockk<TypeEntity>())
 
         // when
-        service.getTypes()
+        service.getTypes(1, 10, null)
 
         // then
-        verify(exactly = 1) { repository.findAll() }
+        verify(exactly = 1) { repository.findAll(1, 10) }
+        verify(exactly = 0) { repository.findAllContaining(any(), any(), any()) }
+    }
+
+    @Test
+    fun `get all types with filter`() {
+        // given
+        every { repository.findAllContaining(any(), any(), any()) } returns flowOf(mockk<TypeEntity>())
+
+        // when
+        service.getTypes(1, 10, "abc")
+
+        // then
+        verify(exactly = 1) { repository.findAllContaining("%abc%", 1, 10) }
+        verify(exactly = 0) { repository.findAll(any(), any()) }
     }
 
     @Test

@@ -2,7 +2,6 @@ package ltd.hlaeja.controller
 
 import ltd.hlaeja.library.deviceRegistry.Type
 import ltd.hlaeja.test.container.PostgresContainer
-import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension
@@ -36,23 +35,6 @@ class TypeEndpoint {
     }
 
     @Nested
-    inner class GetTypes {
-
-        @Test
-        fun `get types`() {
-            // when
-            val result = webClient.get().uri("/types").exchange()
-
-            // then
-            result.expectStatus().isOk()
-                .expectBody<List<Type.Response>>()
-                .consumeWith {
-                    assertThat(it.responseBody?.size).isEqualTo(5)
-                }
-        }
-    }
-
-    @Nested
     inner class CreateType {
 
         @Test
@@ -80,7 +62,7 @@ class TypeEndpoint {
         fun `added type - fail name take`() {
             // given
             val request = Type.Request(
-                name = "Thing 1",
+                name = "Thing 1 v1",
             )
 
             // when

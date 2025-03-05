@@ -8,11 +8,11 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.UUID
 import kotlin.test.Test
-import ltd.hlaeja.assertj.assertThat
 import ltd.hlaeja.entity.NodeEntity
 import ltd.hlaeja.entity.TypeEntity
-import ltd.hlaeja.library.deviceRegistry.Type
 import ltd.hlaeja.library.deviceRegistry.Node
+import ltd.hlaeja.library.deviceRegistry.Type
+import ltd.hlaeja.test.isEqualToUuid
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertThrows
@@ -68,7 +68,7 @@ class MappingKtTest {
             val response = entity.toTypeResponse()
 
             // then
-            assertThat(response.id).isUUID("00000000-0000-0000-0000-000000000000")
+            assertThat(response.id).isEqualToUuid("00000000-0000-0000-0000-000000000000")
             assertThat(response.name).isEqualTo("name")
         }
 
@@ -119,9 +119,9 @@ class MappingKtTest {
             val result = entity.toNodeResponse()
 
             // then
-            assertThat(result.id).isUUID("00000000-0000-0000-0000-000000000001")
-            assertThat(result.client).isUUID("00000000-0000-0000-0000-000000000002")
-            assertThat(result.device).isUUID("00000000-0000-0000-0000-000000000003")
+            assertThat(result.id).isEqualToUuid("00000000-0000-0000-0000-000000000001")
+            assertThat(result.client).isEqualToUuid("00000000-0000-0000-0000-000000000002")
+            assertThat(result.device).isEqualToUuid("00000000-0000-0000-0000-000000000003")
             assertThat(result.name).isEqualTo("test")
         }
 
@@ -164,9 +164,9 @@ class MappingKtTest {
             val result = entity.toIdentityResponse()
 
             // then
-            assertThat(result.node).isUUID("00000000-0000-0000-0000-000000000001")
-            assertThat(result.client).isUUID("00000000-0000-0000-0000-000000000002")
-            assertThat(result.device).isUUID("00000000-0000-0000-0000-000000000003")
+            assertThat(result.node).isEqualToUuid("00000000-0000-0000-0000-000000000001")
+            assertThat(result.client).isEqualToUuid("00000000-0000-0000-0000-000000000002")
+            assertThat(result.device).isEqualToUuid("00000000-0000-0000-0000-000000000003")
         }
 
         @Test

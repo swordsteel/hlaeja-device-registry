@@ -8,9 +8,10 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.UUID
 import kotlinx.coroutines.test.runTest
-import ltd.hlaeja.assertj.assertThat
 import ltd.hlaeja.entity.NodeEntity
 import ltd.hlaeja.service.NodeService
+import ltd.hlaeja.test.isEqualToUuid
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -48,8 +49,8 @@ class IdentityControllerTest {
         // then
         coVerify(exactly = 1) { service.getNodeFromDevice(any()) }
 
-        assertThat(response.node).isUUID("00000000-0000-0000-0000-000000000001")
-        assertThat(response.client).isUUID("00000000-0000-0000-0000-000000000002")
-        assertThat(response.device).isUUID("00000000-0000-0000-0000-000000000003")
+        assertThat(response.node).isEqualToUuid("00000000-0000-0000-0000-000000000001")
+        assertThat(response.client).isEqualToUuid("00000000-0000-0000-0000-000000000002")
+        assertThat(response.device).isEqualToUuid("00000000-0000-0000-0000-000000000003")
     }
 }

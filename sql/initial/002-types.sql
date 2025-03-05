@@ -3,15 +3,20 @@
 
 CREATE TABLE IF NOT EXISTS public.types
 (
-  id         UUID                              DEFAULT gen_uuid_v7(),
+  id        UUID                              DEFAULT gen_uuid_v7(),
   timestamp timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  name      VARCHAR(50) UNIQUE       NOT NULL,
+  name      VARCHAR(50)              NOT NULL,
   CONSTRAINT pk_contact_types PRIMARY KEY (id)
 );
 
 ALTER TABLE IF EXISTS public.types
   OWNER to role_administrator;
 
+-- Index: types_name_key
+-- DROP INDEX IF EXISTS types_name_key;
+
+CREATE UNIQUE INDEX IF NOT EXISTS  types_name_key
+  ON types (name ASC);
 
 -- Revoke all permissions from existing roles
 REVOKE ALL ON TABLE public.types FROM role_administrator, role_maintainer, role_support, role_service;

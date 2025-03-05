@@ -16,7 +16,14 @@ class TypeService(
     private val typeRepository: TypeRepository,
 ) {
 
-    fun getTypes(): Flow<TypeEntity> = typeRepository.findAll()
+    fun getTypes(
+        page: Int,
+        show: Int,
+        filter: String?,
+    ): Flow<TypeEntity> = when {
+        !filter.isNullOrEmpty() -> typeRepository.findAllContaining("%$filter%", page, show)
+        else -> typeRepository.findAll(page, show)
+    }
 
     suspend fun addType(
         entity: TypeEntity,

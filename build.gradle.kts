@@ -16,12 +16,14 @@ dependencies {
     implementation(hlaeja.library.jwt)
     implementation(hlaeja.springboot.starter.actuator)
     implementation(hlaeja.springboot.starter.r2dbc)
+    implementation(hlaeja.springboot.starter.validation)
     implementation(hlaeja.springboot.starter.webflux)
 
     runtimeOnly(hlaeja.postgresql)
     runtimeOnly(hlaeja.postgresql.r2dbc)
 
     testImplementation(hlaeja.assertj.core)
+    testImplementation(hlaeja.library.test)
     testImplementation(hlaeja.mockk)
     testImplementation(hlaeja.projectreactor.reactor.test)
     testImplementation(hlaeja.kotlin.test.junit5)

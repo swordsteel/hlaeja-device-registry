@@ -1,0 +1,17 @@
+### get all types
+GET {{hostname}}/types
+
+### get all types
+GET {{hostname}}/types/page-1
+
+### get all types
+GET {{hostname}}/types/page-1/show-2
+
+### get all types
+GET {{hostname}}/types/filter-{filter}
+
+### get all types
+GET {{hostname}}/types/filter-{filter}/page-1
+
+### get all types
+GET {{hostname}}/types/filter-{filter}/page-1/show-2

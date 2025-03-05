@@ -1,8 +1,8 @@
 -- Disable triggers on the tables
 
 -- Truncate tables
-TRUNCATE TABLE types;
-TRUNCATE TABLE devices;
-TRUNCATE TABLE nodes;
+TRUNCATE TABLE nodes CASCADE;
+TRUNCATE TABLE devices CASCADE;
+TRUNCATE TABLE types CASCADE;
 
 -- Enable triggers on the account table

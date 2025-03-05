@@ -1,7 +1,3 @@
-### let all types
-GET {{hostname}}/types
-
-
 ### add type by name
 POST {{hostname}}/type
 Content-Type: application/json
