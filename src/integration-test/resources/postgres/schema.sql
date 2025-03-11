@@ -31,6 +31,20 @@ CREATE TABLE IF NOT EXISTS public.types
   CONSTRAINT pk_contact_types PRIMARY KEY (id)
 );
 
+CREATE UNIQUE INDEX IF NOT EXISTS  types_name_key
+  ON types (name ASC);
+
+CREATE TABLE IF NOT EXISTS public.type_descriptions
+(
+  type_id     uuid                                                 NOT NULL,
+  description character varying(1000) COLLATE pg_catalog."default" NOT NULL DEFAULT ''::character varying,
+  CONSTRAINT pk_type_descriptions PRIMARY KEY (type_id),
+  CONSTRAINT fk_type_descriptions_types FOREIGN KEY (type_id)
+    REFERENCES public.types (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+);
+
 -- Table: public.devices
 
 CREATE TABLE IF NOT EXISTS public.devices
