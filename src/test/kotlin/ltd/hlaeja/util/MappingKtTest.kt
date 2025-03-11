@@ -1,6 +1,7 @@
 package ltd.hlaeja.util
 
 import io.mockk.every
+import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import java.time.LocalDateTime
@@ -8,8 +9,11 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.UUID
 import kotlin.test.Test
+import ltd.hlaeja.dto.TypeWithDescription
+import ltd.hlaeja.entity.DeviceEntity
 import ltd.hlaeja.entity.NodeEntity
 import ltd.hlaeja.entity.TypeEntity
+import ltd.hlaeja.jwt.service.PrivateJwtService
 import ltd.hlaeja.library.deviceRegistry.Node
 import ltd.hlaeja.library.deviceRegistry.Type
 import ltd.hlaeja.test.isEqualToUuid
@@ -40,23 +44,82 @@ class MappingKtTest {
     inner class TypeMapping {
 
         @Test
-        fun `request to entity successful`() {
+        fun `request to type entity successful`() {
             // given
+            val id = UUID.fromString("00000000-0000-0000-0000-000000000001")
             val request = Type.Request(
-                "test",
+                "name",
+                "description",
             )
 
             // when
-            val result = request.toTypeEntity()
+            val entity = request.toTypeEntity(id)
 
             // then
-            assertThat(result.id).isNull()
-            assertThat(result.timestamp.toString()).isEqualTo("2000-01-01T00:00:00.000000001Z[UTC]")
-            assertThat(result.name).isEqualTo("test")
+            assertThat(entity.id).isEqualToUuid("00000000-0000-0000-0000-000000000001")
+            assertThat(entity.timestamp).isEqualTo(timestamp)
+            assertThat(entity.name).isEqualTo("name")
         }
 
         @Test
-        fun `entity to response successful`() {
+        fun `request to type description entity successful`() {
+            // given
+            val id = UUID.fromString("00000000-0000-0000-0000-000000000001")
+            val request = Type.Request(
+                "name",
+                "description",
+            )
+
+            // when
+            val entity = request.toTypeDescriptionEntity(id)
+
+            // then
+            assertThat(entity.typeId).isEqualToUuid("00000000-0000-0000-0000-000000000001")
+            assertThat(entity.description).isEqualTo("description")
+        }
+
+        @Test
+        fun `type with description to response successful`() {
+            // given
+            val typeWithDescription = TypeWithDescription(
+                UUID.fromString("00000000-0000-0000-0000-000000000001"),
+                timestamp,
+                "name",
+                "description",
+            )
+
+            // when
+            val response = typeWithDescription.toTypeResponse()
+
+            // then
+            assertThat(response.id).isEqualToUuid("00000000-0000-0000-0000-000000000001")
+            assertThat(response.timestamp).isEqualTo(timestamp)
+            assertThat(response.name).isEqualTo("name")
+            assertThat(response.description).isEqualTo("description")
+        }
+
+        @Test
+        fun `type with description to response, description null successful`() {
+            // given
+            val typeWithDescription = TypeWithDescription(
+                UUID.fromString("00000000-0000-0000-0000-000000000001"),
+                timestamp,
+                "name",
+                null,
+            )
+
+            // when
+            val response = typeWithDescription.toTypeResponse()
+
+            // then
+            assertThat(response.id).isEqualToUuid("00000000-0000-0000-0000-000000000001")
+            assertThat(response.timestamp).isEqualTo(timestamp)
+            assertThat(response.name).isEqualTo("name")
+            assertThat(response.description).isEmpty()
+        }
+
+        @Test
+        fun `type entity to response successful`() {
             // given
             val entity = TypeEntity(
                 UUID.fromString("00000000-0000-0000-0000-000000000000"),
@@ -65,19 +128,12 @@ class MappingKtTest {
             )
 
             // when
-            val response = entity.toTypeResponse()
+            val response = entity.toTypesResponse()
 
             // then
             assertThat(response.id).isEqualToUuid("00000000-0000-0000-0000-000000000000")
+            assertThat(response.timestamp).isEqualTo(timestamp)
             assertThat(response.name).isEqualTo("name")
-        }
-
-        @Test
-        fun `entity to response exception`() {
-            // then exception
-            assertThrows(ResponseStatusException::class.java) {
-                TypeEntity(null, timestamp, "name").toTypeResponse()
-            }
         }
     }
 
@@ -98,7 +154,7 @@ class MappingKtTest {
 
             // then
             assertThat(result.id).isNull()
-            assertThat(result.timestamp.toString()).isEqualTo("2000-01-01T00:00:00.000000001Z[UTC]")
+            assertThat(result.timestamp).isEqualTo(timestamp)
             assertThat(result.client.toString()).isEqualTo("00000000-0000-0000-0000-000000000001")
             assertThat(result.device.toString()).isEqualTo("00000000-0000-0000-0000-000000000002")
             assertThat(result.name).isEqualTo("test")
@@ -183,6 +239,50 @@ class MappingKtTest {
             // then exception
             val exception = assertThrows(ResponseStatusException::class.java) {
                 entity.toIdentityResponse()
+            }
+
+            // then
+            assertThat(exception.message).isEqualTo("417 EXPECTATION_FAILED")
+        }
+    }
+
+    @Nested
+    inner class DeviceMapping {
+
+        val jwtService: PrivateJwtService = mockk()
+
+        @Test
+        fun `entity to identity response successful`() {
+            // given
+            val entity = DeviceEntity(
+                UUID.fromString("00000000-0000-0000-0000-000000000001"),
+                timestamp,
+                UUID.fromString("00000000-0000-0000-0000-000000000002"),
+            )
+
+            every { jwtService.sign(any()) } returns "header.payload.signature"
+
+            // when
+            val result = entity.toDeviceResponse(jwtService)
+
+            // then
+            assertThat(result.id).isEqualToUuid("00000000-0000-0000-0000-000000000001")
+            assertThat(result.type).isEqualToUuid("00000000-0000-0000-0000-000000000002")
+            assertThat(result.identity).isEqualTo("header.payload.signature")
+        }
+
+        @Test
+        fun `entity to identity response exception`() {
+            // given
+            val entity = DeviceEntity(
+                null,
+                timestamp,
+                UUID.fromString("00000000-0000-0000-0000-000000000002"),
+            )
+
+            // then exception
+            val exception = assertThrows(ResponseStatusException::class.java) {
+                entity.toDeviceResponse(jwtService)
             }
 
             // then

@@ -3,9 +3,9 @@ package ltd.hlaeja.controller
 import jakarta.validation.constraints.Min
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import ltd.hlaeja.library.deviceRegistry.Type
+import ltd.hlaeja.library.deviceRegistry.Types
 import ltd.hlaeja.service.TypeService
-import ltd.hlaeja.util.toTypeResponse
+import ltd.hlaeja.util.toTypesResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
@@ -31,6 +31,6 @@ class TypesController(
         @PathVariable(required = false) @Min(1) page: Int = DEFAULT_PAGE,
         @PathVariable(required = false) @Min(1) show: Int = DEFAULT_SIZE,
         @PathVariable(required = false) filter: String? = null,
-    ): Flow<Type.Response> = service.getTypes((page - 1) * show, show, filter)
-        .map { it.toTypeResponse() }
+    ): Flow<Types.Response> = service.getTypes((page - 1) * show, show, filter)
+        .map { it.toTypesResponse() }
 }

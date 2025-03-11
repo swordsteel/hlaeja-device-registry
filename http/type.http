@@ -1,7 +1,20 @@
-### add type by name
+### add type
 POST {{hostname}}/type
 Content-Type: application/json
 
 {
-  "name": "Test C"
+  "name": "Test Device 001",
+  "description": "Description of test device."
+}
+
+### get type by id
+GET {{hostname}}/type-00000000-0000-0000-0000-000000000000
+
+### update type by id
+PUT {{hostname}}/type-00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+
+{
+  "name": "Test Device 001",
+  "description": "Description of test device."
 }

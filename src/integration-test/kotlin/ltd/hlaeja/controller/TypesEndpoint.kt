@@ -1,6 +1,6 @@
 package ltd.hlaeja.controller
 
-import ltd.hlaeja.library.deviceRegistry.Type
+import ltd.hlaeja.library.deviceRegistry.Types
 import ltd.hlaeja.test.container.PostgresContainer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -36,7 +36,7 @@ class TypesEndpoint {
 
         // then
         result.expectStatus().isOk()
-            .expectBody<List<Type.Response>>()
+            .expectBody<List<Types.Response>>()
             .consumeWith {
                 assertThat(it.responseBody?.size).isEqualTo(4)
             }
@@ -55,7 +55,7 @@ class TypesEndpoint {
 
         // then
         result.expectStatus().isOk()
-            .expectBody<List<Type.Response>>()
+            .expectBody<List<Types.Response>>()
             .consumeWith {
                 assertThat(it.responseBody?.size).isEqualTo(expected)
             }
@@ -84,7 +84,7 @@ class TypesEndpoint {
 
         // then
         result.expectStatus().isOk()
-            .expectBody<List<Type.Response>>()
+            .expectBody<List<Types.Response>>()
             .consumeWith {
                 assertThat(it.responseBody?.size).isEqualTo(expected)
             }
@@ -120,7 +120,7 @@ class TypesEndpoint {
 
         // then
         result.expectStatus().isOk()
-            .expectBody<List<Type.Response>>()
+            .expectBody<List<Types.Response>>()
             .consumeWith {
                 assertThat(it.responseBody?.size).isEqualTo(expected)
             }
@@ -144,7 +144,7 @@ class TypesEndpoint {
 
         // then
         result.expectStatus().isOk()
-            .expectBody<List<Type.Response>>()
+            .expectBody<List<Types.Response>>()
             .consumeWith {
                 assertThat(it.responseBody?.size).isEqualTo(expected)
             }
@@ -185,7 +185,7 @@ class TypesEndpoint {
 
         // then
         result.expectStatus().isOk()
-            .expectBody<List<Type.Response>>()
+            .expectBody<List<Types.Response>>()
             .consumeWith {
                 assertThat(it.responseBody?.size).isEqualTo(expected)
             }

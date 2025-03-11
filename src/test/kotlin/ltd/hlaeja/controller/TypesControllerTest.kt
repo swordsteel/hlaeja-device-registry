@@ -19,8 +19,10 @@ import org.junit.jupiter.api.Test
 
 class TypesControllerTest {
     companion object {
-        val id = UUID.fromString("00000000-0000-0000-0000-000000000000")
-        val timestamp = ZonedDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0, 0, 1), ZoneId.of("UTC"))
+        const val NAME: String = "name"
+        const val NIL_UUID: String = "00000000-0000-0000-0000-000000000000"
+        val id: UUID = UUID.fromString(NIL_UUID)
+        val timestamp: ZonedDateTime = ZonedDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0, 0, 1), ZoneId.of("UTC"))
     }
 
     val service: TypeService = mockk()
@@ -35,7 +37,9 @@ class TypesControllerTest {
     @Test
     fun `get all types`() = runTest {
         // given
-        every { service.getTypes(any(), any(), any()) } returns flowOf(TypeEntity(id, timestamp, "name"))
+        every {
+            service.getTypes(any(), any(), any())
+        } returns flowOf(TypeEntity(id, timestamp, NAME))
 
         // when
         val response = controller.getTypes().single()
@@ -43,7 +47,8 @@ class TypesControllerTest {
         // then
         verify(exactly = 1) { service.getTypes(0, 25, null) }
 
-        assertThat(response.id).isEqualToUuid("00000000-0000-0000-0000-000000000000")
-        assertThat(response.name).isEqualTo("name")
+        assertThat(response.id).isEqualToUuid(NIL_UUID)
+        assertThat(response.name).isEqualTo(NAME)
+        assertThat(response.timestamp).isEqualTo(timestamp)
     }
 }
