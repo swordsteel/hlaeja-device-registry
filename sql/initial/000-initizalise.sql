@@ -56,10 +56,12 @@ CREATE DATABASE device_registry
   WITH
   OWNER = role_administrator
   ENCODING = 'UTF8'
-  LC_COLLATE = 'en_US.utf8'
-  LC_CTYPE = 'en_US.utf8'
+  LC_COLLATE = 'en_US.UTF-8'
+  LC_CTYPE = 'en_US.UTF-8'
   LOCALE_PROVIDER = 'libc'
   TABLESPACE = pg_default
   CONNECTION LIMIT = -1
   IS_TEMPLATE = False;
 
+COMMENT ON DATABASE device_registry
+  IS 'Database for managing device types, registered devices, and their deployment as nodes.';
