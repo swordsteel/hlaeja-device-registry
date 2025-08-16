@@ -1,0 +1,8 @@
+### get all types
+GET {{hostname}}/devices
+
+### get all types
+GET {{hostname}}/devices/page-1
+
+### get all types
+GET {{hostname}}/devices/page-1/show-2

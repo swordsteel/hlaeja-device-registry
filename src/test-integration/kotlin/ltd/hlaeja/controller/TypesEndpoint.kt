@@ -1,11 +1,10 @@
 package ltd.hlaeja.controller
 
 import ltd.hlaeja.library.deviceRegistry.Types
-import ltd.hlaeja.test.container.PostgresContainer
+import ltd.hlaeja.test.container.PostgresTestContainer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.boot.test.context.SpringBootTest
@@ -14,9 +13,8 @@ import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
 
-@PostgresContainer
+@PostgresTestContainer
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TypesEndpoint {
 
     @LocalServerPort

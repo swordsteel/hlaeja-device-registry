@@ -2,13 +2,14 @@ package ltd.hlaeja.util
 
 import java.time.ZonedDateTime
 import java.util.UUID
+import ltd.hlaeja.dto.TypeWithDescription
 import ltd.hlaeja.entity.DeviceEntity
 import ltd.hlaeja.entity.NodeEntity
-import ltd.hlaeja.entity.TypeEntity
-import ltd.hlaeja.dto.TypeWithDescription
 import ltd.hlaeja.entity.TypeDescriptionEntity
+import ltd.hlaeja.entity.TypeEntity
 import ltd.hlaeja.jwt.service.PrivateJwtService
 import ltd.hlaeja.library.deviceRegistry.Device
+import ltd.hlaeja.library.deviceRegistry.Devices
 import ltd.hlaeja.library.deviceRegistry.Identity
 import ltd.hlaeja.library.deviceRegistry.Node
 import ltd.hlaeja.library.deviceRegistry.Type
@@ -67,4 +68,10 @@ fun DeviceEntity.toDeviceResponse(
     id ?: throw ResponseStatusException(EXPECTATION_FAILED),
     type,
     jwtService.sign("device" to id),
+)
+
+fun DeviceEntity.toDevicesResponse(): Devices.Response = Devices.Response(
+    id ?: throw ResponseStatusException(EXPECTATION_FAILED),
+    type,
+    timestamp,
 )

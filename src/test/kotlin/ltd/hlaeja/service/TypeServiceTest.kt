@@ -6,7 +6,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
-import io.mockk.verify
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -57,29 +56,29 @@ class TypeServiceTest {
     }
 
     @Test
-    fun `get all types`() {
+    fun `get all types`() = runTest {
         // given
-        every { typeRepository.findAll(any(), any()) } returns flowOf(mockk<TypeEntity>())
+        coEvery { typeRepository.findAll(any(), any()) } returns flowOf(mockk<TypeEntity>())
 
         // when
         service.getTypes(1, 10, null)
 
         // then
-        verify(exactly = 1) { typeRepository.findAll(1, 10) }
-        verify(exactly = 0) { typeRepository.findAllContaining(any(), any(), any()) }
+        coVerify(exactly = 1) { typeRepository.findAll(1, 10) }
+        coVerify(exactly = 0) { typeRepository.findAllContaining(any(), any(), any()) }
     }
 
     @Test
-    fun `get all types with filter`() {
+    fun `get all types with filter`() = runTest {
         // given
-        every { typeRepository.findAllContaining(any(), any(), any()) } returns flowOf(mockk<TypeEntity>())
+        coEvery { typeRepository.findAllContaining(any(), any(), any()) } returns flowOf(mockk<TypeEntity>())
 
         // when
         service.getTypes(1, 10, "abc")
 
         // then
-        verify(exactly = 1) { typeRepository.findAllContaining("%abc%", 1, 10) }
-        verify(exactly = 0) { typeRepository.findAll(any(), any()) }
+        coVerify(exactly = 1) { typeRepository.findAllContaining("%abc%", 1, 10) }
+        coVerify(exactly = 0) { typeRepository.findAll(any(), any()) }
     }
 
     @Test
