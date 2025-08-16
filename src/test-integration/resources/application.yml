@@ -6,10 +6,3 @@ spring:
     url: r2dbc:postgresql://placeholder
     username: placeholder
     password: placeholder
-
-container:
-  postgres:
-    version: postgres:17
-    init: postgres/schema.sql
-    before: postgres/data.sql
-    after: postgres/reset.sql

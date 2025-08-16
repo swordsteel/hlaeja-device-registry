@@ -1,7 +1,7 @@
 package ltd.hlaeja.controller
 
 import ltd.hlaeja.library.deviceRegistry.Type
-import ltd.hlaeja.test.container.PostgresContainer
+import ltd.hlaeja.test.container.PostgresTestContainer
 import ltd.hlaeja.test.isEqualToUuid
 import org.assertj.core.api.SoftAssertions
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions
@@ -21,7 +21,7 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
 
-@PostgresContainer
+@PostgresTestContainer
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ExtendWith(SoftAssertionsExtension::class)
 class TypeEndpoint {

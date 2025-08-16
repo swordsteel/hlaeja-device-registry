@@ -13,13 +13,13 @@ import org.springframework.stereotype.Repository
 interface TypeRepository : CoroutineCrudRepository<TypeEntity, UUID> {
 
     @Query("SELECT * FROM types ORDER BY name LIMIT :limit OFFSET :offset")
-    fun findAll(
+    suspend fun findAll(
         @Param("offset") offset: Int,
         @Param("limit") limit: Int,
     ): Flow<TypeEntity>
 
     @Query("SELECT * FROM types WHERE name ILIKE :filter ORDER BY name LIMIT :limit OFFSET :offset")
-    fun findAllContaining(
+    suspend fun findAllContaining(
         @Param("filter") filter: String,
         @Param("offset") offset: Int,
         @Param("limit") limit: Int,

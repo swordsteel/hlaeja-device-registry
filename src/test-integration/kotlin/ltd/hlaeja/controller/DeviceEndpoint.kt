@@ -3,7 +3,7 @@ package ltd.hlaeja.controller
 import java.util.UUID
 import ltd.hlaeja.library.deviceRegistry.Device
 import ltd.hlaeja.test.compareToFile
-import ltd.hlaeja.test.container.PostgresContainer
+import ltd.hlaeja.test.container.PostgresTestContainer
 import ltd.hlaeja.test.isEqualToUuid
 import org.assertj.core.api.SoftAssertions
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions
@@ -18,7 +18,7 @@ import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
 
-@PostgresContainer
+@PostgresTestContainer
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ExtendWith(SoftAssertionsExtension::class)
 class DeviceEndpoint {
