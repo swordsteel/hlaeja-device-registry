@@ -26,7 +26,7 @@ class TypeService(
     private val typeDescriptionRepository: TypeDescriptionRepository,
 ) {
 
-    fun getTypes(
+    suspend fun getTypes(
         page: Int,
         show: Int,
         filter: String?,

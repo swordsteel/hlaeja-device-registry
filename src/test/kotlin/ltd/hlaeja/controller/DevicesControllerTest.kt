@@ -10,45 +10,45 @@ import java.util.UUID
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.test.runTest
-import ltd.hlaeja.entity.TypeEntity
-import ltd.hlaeja.service.TypeService
+import ltd.hlaeja.entity.DeviceEntity
+import ltd.hlaeja.service.DeviceService
 import ltd.hlaeja.test.isEqualToUuid
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class TypesControllerTest {
+class DevicesControllerTest {
     companion object {
-        const val NAME: String = "name"
         const val NIL_UUID: String = "00000000-0000-0000-0000-000000000000"
         val id: UUID = UUID.fromString(NIL_UUID)
+        val type: UUID = UUID.fromString(NIL_UUID)
         val timestamp: ZonedDateTime = ZonedDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0, 0, 1), ZoneId.of("UTC"))
     }
 
-    val service: TypeService = mockk()
+    val service: DeviceService = mockk()
 
-    lateinit var controller: TypesController
+    lateinit var controller: DevicesController
 
     @BeforeEach
     fun setUp() {
-        controller = TypesController(service)
+        controller = DevicesController(service)
     }
 
     @Test
-    fun `get all types`() = runTest {
+    fun `get all devices`() = runTest {
         // given
         coEvery {
-            service.getTypes(any(), any(), any())
-        } returns flowOf(TypeEntity(id, timestamp, NAME))
+            service.getDevices(any(), any())
+        } returns flowOf(DeviceEntity(id, timestamp, type))
 
         // when
-        val response = controller.getTypes().single()
+        val response = controller.getDevices().single()
 
         // then
-        coVerify(exactly = 1) { service.getTypes(0, 25, null) }
+        coVerify(exactly = 1) { service.getDevices(0, 25) }
 
         assertThat(response.id).isEqualToUuid(NIL_UUID)
-        assertThat(response.name).isEqualTo(NAME)
+        assertThat(response.type).isEqualToUuid(NIL_UUID)
         assertThat(response.timestamp).isEqualTo(timestamp)
     }
 }
