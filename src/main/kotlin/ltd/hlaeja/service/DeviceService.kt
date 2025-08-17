@@ -37,4 +37,10 @@ class DeviceService(
         page: Int,
         show: Int,
     ): Flow<DeviceEntity> = deviceRepository.findAll(page, show)
+
+    suspend fun getDevicesByType(
+        type: UUID,
+        page: Int,
+        show: Int,
+    ): Flow<DeviceEntity> = deviceRepository.findAllByType(type, page, show)
 }

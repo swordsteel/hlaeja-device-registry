@@ -16,4 +16,11 @@ interface DeviceRepository : CoroutineCrudRepository<DeviceEntity, UUID> {
         @Param("offset") offset: Int,
         @Param("limit") limit: Int,
     ): Flow<DeviceEntity>
+
+    @Query("SELECT * FROM devices WHERE type = :type LIMIT :limit OFFSET :offset")
+    fun findAllByType(
+        @Param("type") type: UUID,
+        @Param("offset") offset: Int,
+        @Param("limit") limit: Int,
+    ): Flow<DeviceEntity>
 }

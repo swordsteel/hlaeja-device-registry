@@ -51,4 +51,22 @@ class DevicesControllerTest {
         assertThat(response.type).isEqualToUuid(NIL_UUID)
         assertThat(response.timestamp).isEqualTo(timestamp)
     }
+
+    @Test
+    fun `get all devices for type`() = runTest {
+        // given
+        coEvery {
+            service.getDevicesByType(any(), any(), any())
+        } returns flowOf(DeviceEntity(id, timestamp, type))
+
+        // when
+        val response = controller.getDevicesByType(type).single()
+
+        // then
+        coVerify(exactly = 1) { service.getDevicesByType(type, 0, 25) }
+
+        assertThat(response.id).isEqualToUuid(NIL_UUID)
+        assertThat(response.type).isEqualToUuid(NIL_UUID)
+        assertThat(response.timestamp).isEqualTo(timestamp)
+    }
 }

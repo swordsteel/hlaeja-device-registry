@@ -1,6 +1,7 @@
 package ltd.hlaeja.controller
 
 import jakarta.validation.constraints.Min
+import java.util.UUID
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ltd.hlaeja.library.deviceRegistry.Devices
@@ -29,5 +30,17 @@ class DevicesController(
         @PathVariable(required = false) @Min(1) page: Int = DEFAULT_PAGE,
         @PathVariable(required = false) @Min(1) show: Int = DEFAULT_SIZE,
     ): Flow<Devices.Response> = deviceService.getDevices((page - 1) * show, show)
+        .map { it.toDevicesResponse() }
+
+    @GetMapping(
+        "/devices/type-{type}",
+        "/devices/type-{type}/page-{page}",
+        "/devices/type-{type}/page-{page}/show-{show}",
+    )
+    suspend fun getDevicesByType(
+        @PathVariable type: UUID,
+        @PathVariable(required = false) @Min(1) page: Int = DEFAULT_PAGE,
+        @PathVariable(required = false) @Min(1) show: Int = DEFAULT_SIZE,
+    ): Flow<Devices.Response> = deviceService.getDevicesByType(type, (page - 1) * show, show)
         .map { it.toDevicesResponse() }
 }
