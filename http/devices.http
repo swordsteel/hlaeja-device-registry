@@ -6,3 +6,12 @@ GET {{hostname}}/devices/page-1
 
 ### get all types
 GET {{hostname}}/devices/page-1/show-2
+
+### get all types
+GET {{hostname}}/devices/type-00000000-0000-0000-0000-000000000000
+
+### get all types
+GET {{hostname}}/devices/type-00000000-0000-0000-0000-000000000000/page-1
+
+### get all types
+GET {{hostname}}/devices/type-00000000-0000-0000-0000-000000000000/page-1/show-2
