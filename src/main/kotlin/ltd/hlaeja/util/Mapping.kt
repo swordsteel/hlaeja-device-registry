@@ -12,6 +12,7 @@ import ltd.hlaeja.library.deviceRegistry.Device
 import ltd.hlaeja.library.deviceRegistry.Devices
 import ltd.hlaeja.library.deviceRegistry.Identity
 import ltd.hlaeja.library.deviceRegistry.Node
+import ltd.hlaeja.library.deviceRegistry.Nodes
 import ltd.hlaeja.library.deviceRegistry.Type
 import ltd.hlaeja.library.deviceRegistry.Types
 import org.springframework.http.HttpStatus.EXPECTATION_FAILED
@@ -74,4 +75,12 @@ fun DeviceEntity.toDevicesResponse(): Devices.Response = Devices.Response(
     id ?: throw ResponseStatusException(EXPECTATION_FAILED),
     type,
     timestamp,
+)
+
+fun NodeEntity.toNodesResponse(): Nodes.Response = Nodes.Response(
+    id ?: throw ResponseStatusException(EXPECTATION_FAILED),
+    timestamp,
+    client,
+    device,
+    name,
 )

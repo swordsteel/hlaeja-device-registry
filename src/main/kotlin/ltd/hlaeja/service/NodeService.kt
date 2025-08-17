@@ -2,6 +2,7 @@ package ltd.hlaeja.service
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import java.util.UUID
+import kotlinx.coroutines.flow.Flow
 import ltd.hlaeja.entity.NodeEntity
 import ltd.hlaeja.repository.NodeRepository
 import org.springframework.dao.DataIntegrityViolationException
@@ -29,4 +30,9 @@ class NodeService(
         device: UUID,
     ): NodeEntity = nodeRepository.findByDevice(device)
         ?: throw ResponseStatusException(NOT_FOUND)
+
+    suspend fun getNodes(
+        page: Int,
+        show: Int,
+    ): Flow<NodeEntity> = nodeRepository.findAll(page, show)
 }
