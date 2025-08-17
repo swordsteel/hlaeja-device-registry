@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ltd.hlaeja.library.deviceRegistry.Devices
 import ltd.hlaeja.service.DeviceService
+import ltd.hlaeja.util.Pagination.DEFAULT_PAGE
+import ltd.hlaeja.util.Pagination.DEFAULT_SIZE
 import ltd.hlaeja.util.toDevicesResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -15,11 +17,6 @@ import org.springframework.web.bind.annotation.RestController
 class DevicesController(
     private val deviceService: DeviceService,
 ) {
-
-    companion object {
-        const val DEFAULT_PAGE: Int = 1
-        const val DEFAULT_SIZE: Int = 25
-    }
 
     @GetMapping(
         "/devices",

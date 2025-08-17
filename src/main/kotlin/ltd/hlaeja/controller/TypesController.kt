@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ltd.hlaeja.library.deviceRegistry.Types
 import ltd.hlaeja.service.TypeService
+import ltd.hlaeja.util.Pagination.DEFAULT_PAGE
+import ltd.hlaeja.util.Pagination.DEFAULT_SIZE
 import ltd.hlaeja.util.toTypesResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -14,10 +16,6 @@ import org.springframework.web.bind.annotation.RestController
 class TypesController(
     private val service: TypeService,
 ) {
-    companion object {
-        const val DEFAULT_PAGE: Int = 1
-        const val DEFAULT_SIZE: Int = 25
-    }
 
     @GetMapping(
         "/types",
