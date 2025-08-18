@@ -10,3 +10,4 @@ jobs:
       CI_BOT_PAT: ${{ secrets.CI_BOT_PAT }}
     with:
       TYPE: service
+      DATABASE_FILES: sql
